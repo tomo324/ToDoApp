@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block body %}
+<h1>ログイン</h1>
+<form  class="m-5" action="/login" method="POST">
+    <label for="">ユーザ名</label>
+    <input type="text" name="username">
+    <label for="">パスワード</label>
+    <input type="password" name="password">
+    <input type="submit" value="ログイン">
+</form>
+{% endblock %}

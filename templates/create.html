@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<form class="m-5" action="/" method="POST">
+<form class="m-5" action="/create" method="POST">
     <div class="mb-3 pd-3">
         <label for="title" class="form-label" >Title</label>
         <input type="text" class="form-control" name="title">
@@ -14,7 +14,7 @@
         <label for="due">Due</label>
         <input type="date" name="due" required>
     </div>
-    <a class="btn btn-outline-primary" href="/" role="button">Return</a>
+    <a class="btn btn-outline-primary" href="/index" role="button">Return</a>
     <button type="submit" class="btn btn-primary">Create</button>
 </form>
 {% endblock %}
