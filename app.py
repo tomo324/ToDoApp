@@ -50,9 +50,7 @@ def create():
         title = request.form.get('title')
         detail = request.form.get('detail')
         due = request.form.get('due')
-
         due = datetime.strptime(due, '%Y-%m-%d')
-
         new_post = Post(title=title, detail=detail, due=due)
         db.session.add(new_post)
         db.session.commit()
@@ -85,7 +83,6 @@ def update(id):
 @login_required
 def delete(id):
     post = Post.query.get(id)
-
     db.session.delete(post)
     db.session.commit()
     return redirect('/index')
@@ -130,4 +127,4 @@ def logout():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
