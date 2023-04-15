@@ -31,13 +31,16 @@ class Post(db.Model):
     title = db.Column(db.String(30), nullable=False)
     detail = db.Column(db.String(100))
     due = db.Column(db.DateTime, nullable=False)
+    user_id = db.Column(db.Integer, nullable=False)
 
 @app.route('/index', methods=['GET'])
 @login_required
 def index():
     if request.method == 'GET':
-        posts = Post.query.order_by(Post.due).all()
-        username = current_user.username
+        user = current_user
+        username = user.username
+        #現在ログインしているユーザーが投稿したポストをすべて取得し、日付順に並び替える
+        posts = Post.query.filter_by(user_id=user.id).order_by(Post.due).all()
         return render_template('index.html', posts=posts, today=date.today(), username=username)
 
 
@@ -51,7 +54,8 @@ def create():
         detail = request.form.get('detail')
         due = request.form.get('due')
         due = datetime.strptime(due, '%Y-%m-%d')
-        new_post = Post(title=title, detail=detail, due=due)
+        user_id = current_user.id
+        new_post = Post(title=title, detail=detail, due=due, user_id=user_id)
         db.session.add(new_post)
         db.session.commit()
         return redirect('/index')
