@@ -18,7 +18,7 @@ https://to-do-app-232q.onrender.com/
 ## 難しかったこと
 ・フレームワークの理解  
 ・サインアップとログイン機能の実装  
-・タスクをユーザーごとに管理する機能の実装
+・タスクをユーザーごとに管理する機能の実装 
 
 ## 参考資料
 ・https://tech-diary.net/flask-introduction/#index_id38  
