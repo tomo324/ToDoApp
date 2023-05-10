@@ -4,7 +4,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
-from tkinter import messagebox
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db'
@@ -106,9 +105,7 @@ def signup():
             db.session.commit()
             return redirect('/login')
         except:
-            messagebox.showerror('error', 'Possible duplicate user name')
-            return redirect('/signup')
-
+            return "<script>alert('This user name is already in use');window.location.href='/signup'</script>"
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -124,11 +121,9 @@ def login():
                 login_user(user)
                 return redirect('/index')
             else:
-                messagebox.showerror('error', 'Incorrect user name or password')
-                return redirect('/login')
+                return "<script>alert('Incorrect user name or password');window.location.href='/login'</script>"
         except:
-            messagebox.showerror('error', 'Incorrect user name or password')
-            return redirect('/login')
+            return "<script>alert('Incorrect user name or password');window.location.href='/login'</script>"
 
 @app.route('/', methods=['GET'])
 def top():
@@ -142,5 +137,6 @@ def logout():
     return redirect('/')
 
 
+
 if __name__ == "__main__":
-    app.run(debug=True) #コミット時に消す
+    app.run()
