@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
+from tkinter import messagebox
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db'
@@ -98,11 +99,15 @@ def signup():
     else:
         username = request.form.get('username')
         password = request.form.get('password')
-        # Userのインスタンスを生成
-        user = User(username=username, password=generate_password_hash(password, method='sha256'))
-        db.session.add(user)
-        db.session.commit()
-        return redirect('/login')
+        try:
+            # Userのインスタンスを生成
+            user = User(username=username, password=generate_password_hash(password, method='sha256'))
+            db.session.add(user)
+            db.session.commit()
+            return redirect('/login')
+        except:
+            messagebox.showerror('error', 'Possible duplicate user name')
+            return redirect('/signup')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -112,11 +117,18 @@ def login():
     else:
         username = request.form.get('username')
         password = request.form.get('password')
-        # Userテーブルからusernameに一致するユーザーを取得
-        user = User.query.filter_by(username=username).first()
-        if check_password_hash(user.password, password):
-            login_user(user)
-            return redirect('/index')
+        try:
+            # Userテーブルからusernameに一致するユーザーを取得
+            user = User.query.filter_by(username=username).first()
+            if check_password_hash(user.password, password):
+                login_user(user)
+                return redirect('/index')
+            else:
+                messagebox.showerror('error', 'Incorrect user name or password')
+                return redirect('/login')
+        except:
+            messagebox.showerror('error', 'Incorrect user name or password')
+            return redirect('/login')
 
 @app.route('/', methods=['GET'])
 def top():
@@ -131,4 +143,4 @@ def logout():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True) #コミット時に消す
